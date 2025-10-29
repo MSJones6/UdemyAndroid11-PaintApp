@@ -19,6 +19,8 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
     private var brushSize: Float = 0.toFloat()
     private var color = Color.BLACK
     private var canvas: Canvas? = null
+    private val paths = ArrayList<CustomPath>()
+
 
     init {
         setupDrawing()
@@ -49,6 +51,12 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
         super.onDraw(canvas)
         canvas.drawBitmap(canvasBitmap!!, 0f, 0f, canvasPaint)
 
+        for (path in paths) {
+            drawPaint!!.strokeWidth = path.brushThickness
+            drawPaint!!.color = path.color
+            canvas.drawPath(path, drawPaint!!)
+        }
+
         if (!drawPath!!.isEmpty) {
             drawPaint!!.strokeWidth = drawPath!!.brushThickness
             drawPaint!!.color = drawPath!!.color
@@ -72,6 +80,7 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
                 drawPath!!.lineTo(touchX!!, touchY!!)
             }
             MotionEvent.ACTION_UP -> {
+                paths.add(drawPath!!)
                 drawPath = CustomPath(color, brushSize)
             }
             else -> return false
