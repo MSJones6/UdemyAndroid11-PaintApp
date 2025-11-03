@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.graphics.createBitmap
@@ -27,8 +28,6 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
     }
 
     private fun setupDrawing() {
-        brushSize = 20.toFloat()
-
         drawPaint = Paint()
         drawPaint!!.color = color
         drawPaint!!.style = Paint.Style.STROKE
@@ -76,18 +75,30 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
                 drawPath!!.reset()
                 drawPath!!.moveTo(touchX!!, touchY!!)
             }
+
             MotionEvent.ACTION_MOVE -> {
                 drawPath!!.lineTo(touchX!!, touchY!!)
             }
+
             MotionEvent.ACTION_UP -> {
                 paths.add(drawPath!!)
                 drawPath = CustomPath(color, brushSize)
             }
+
             else -> return false
         }
         invalidate()
 
         return true
+    }
+
+    fun setSizeForBrush(newSize: Float) {
+        brushSize = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            newSize,
+            resources.displayMetrics
+        )
+        drawPaint!!.strokeWidth = brushSize
     }
 
     internal inner class CustomPath(var color: Int, var brushThickness: Float) : Path() {
