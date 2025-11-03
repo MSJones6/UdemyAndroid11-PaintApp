@@ -6,14 +6,18 @@ import android.widget.ImageButton
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.get
 import de.msjones.paintapp.databinding.ActivityMainBinding
 import de.msjones.paintapp.databinding.DialogBrushSizeBinding
 
 class MainActivity : ComponentActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var dialogBinding: DialogBrushSizeBinding
+
+    private var imageButtonCurrentPaint : ImageButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +26,14 @@ class MainActivity : ComponentActivity() {
         setContentView(view)
 
         binding.drawingView.setSizeForBrush(20f)
+        val paintLayout = binding.llPaintColors
+
+        if (paintLayout.childCount > 1) {
+            imageButtonCurrentPaint = paintLayout.getChildAt(1) as ImageButton
+            imageButtonCurrentPaint!!.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.pallet_pressed)
+            )
+        }
 
         binding.ibBrush.setOnClickListener {
             showBrushSizeChooserDialog()
