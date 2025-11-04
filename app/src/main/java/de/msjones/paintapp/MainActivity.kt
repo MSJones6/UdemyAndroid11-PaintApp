@@ -70,6 +70,13 @@ class MainActivity : ComponentActivity() {
             val imageButton = view as ImageButton
             val colorTag = imageButton.tag.toString()
             binding.drawingView.setColor(colorTag)
+            imageButton.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.pallet_pressed)
+            )
+            imageButtonCurrentPaint!!.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.pallet_normal)
+            )
+            imageButtonCurrentPaint = imageButton
         }
     }
 }
