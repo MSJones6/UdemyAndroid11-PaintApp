@@ -4,13 +4,11 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.get
 import de.msjones.paintapp.databinding.ActivityMainBinding
 import de.msjones.paintapp.databinding.DialogBrushSizeBinding
 
@@ -18,11 +16,23 @@ class MainActivity : ComponentActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var dialogBinding: DialogBrushSizeBinding
 
-    private var imageButtonCurrentPaint : ImageButton? = null
+    private var imageButtonCurrentPaint: ImageButton? = null
+
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            // Hier kannst du die URI verwenden, um das Hintergrundbild zu setzen.
+            // Du müsstest dafür eine ImageView zu deiner activity_main.xml hinzufügen
+            // und dann hier das Bild setzen, z.B.:
+            // binding.ivBackground.setImageURI(uri)
+            Toast.makeText(this, "Hintergrundbild erfolgreich ausgewählt.", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "Kein Bild ausgewählt", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding =  ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
@@ -38,6 +48,11 @@ class MainActivity : ComponentActivity() {
 
         binding.ibBrush.setOnClickListener {
             showBrushSizeChooserDialog()
+        }
+
+        binding.ibGallery.setOnClickListener {
+            // Startet den Photo Picker. Es sind keine manuellen Berechtigungs-Checks mehr nötig.
+            pickImageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
 
