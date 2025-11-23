@@ -21,16 +21,18 @@ class MainActivity : ComponentActivity() {
 
     private var imageButtonCurrentPaint: ImageButton? = null
 
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        if (uri != null) {
-            // Hier kannst du die URI verwenden, um das Hintergrundbild zu setzen.
-            // Du müsstest dafür eine ImageView zu deiner activity_main.xml hinzufügen
-            // und dann hier das Bild setzen, z.B.:
-             binding.ivBackground.setImageURI(uri)
-        } else {
-            Toast.makeText(this, "Kein Bild ausgewählt", Toast.LENGTH_SHORT).show()
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                // Hier kannst du die URI verwenden, um das Hintergrundbild zu setzen.
+                // Du müsstest dafür eine ImageView zu deiner activity_main.xml hinzufügen
+                // und dann hier das Bild setzen, z.B.:
+                binding.ivBackground.visibility = View.VISIBLE
+                binding.ivBackground.setImageURI(uri)
+            } else {
+                Toast.makeText(this, "Kein Bild ausgewählt", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
