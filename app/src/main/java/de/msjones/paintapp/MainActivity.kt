@@ -1,9 +1,12 @@
 package de.msjones.paintapp
 
 import android.app.Dialog
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.PickVisualMediaRequest
@@ -23,8 +26,7 @@ class MainActivity : ComponentActivity() {
             // Hier kannst du die URI verwenden, um das Hintergrundbild zu setzen.
             // Du müsstest dafür eine ImageView zu deiner activity_main.xml hinzufügen
             // und dann hier das Bild setzen, z.B.:
-            // binding.ivBackground.setImageURI(uri)
-            Toast.makeText(this, "Hintergrundbild erfolgreich ausgewählt.", Toast.LENGTH_LONG).show()
+             binding.ivBackground.setImageURI(uri)
         } else {
             Toast.makeText(this, "Kein Bild ausgewählt", Toast.LENGTH_SHORT).show()
         }
